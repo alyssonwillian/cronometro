@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronometo  - JavaScript</title>
+    <style>
+        *{
+            padding:0;
+            margin: 0;
+        }
+        body{
+            background-color: black;
+            color: white;
+        }
+
+        .container{
+            text-align: center;
+            width:100vw;
+            height: 100vh;
+        }
+        
+        .mid {
+            width:50%;
+            position: relative;
+            left: 23%;
+            top: 25%;
+            text-align: center;
+            border: 2px solid gray;
+        }
+
+        h2{
+            margin: 20px;
+        }
+
+        select{
+            padding: 4px 3px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        select:hover{
+            background-color: rgb(210, 210, 210);
+        }
+
+        button{
+            padding:20px 12px;
+            border-radius: 12px ;
+            text-transform: uppercase;
+            font-size: 20px;
+            font-style: italic;
+            cursor: pointer;
+            margin: 50px;
+        }
+
+        button:hover{
+            background-color: rgb(210, 210, 210);
+        }
+
+        @media screen and (max-width: 650px){
+            button{
+                padding: 10px 9px;
+                font-size: 14px;
+            }
+
+            .container{
+            width:97%;
+        }
+
+            .mid{
+            width:98%;
+            left: 0;
+            top: 5%;
+            margin: 0 2%;
+            border: 2px solid gray;
+            }
+
+            h2{
+                font-size: 16px;
+            }
+
+            select{
+            padding: 2px 1.5px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+
+        }
+    </style>
+</head>
+<body>
+    <audio id="sound" src="alarm.mp3" style="display: none;"></audio>
+
+    <div class="container">
+        <div class="mid">
+        <h2>Minutos:</h2>
+        <select name="min" id="minutos" ></select>
+
+        <h2>Segundos:</h2>
+        <select name="seg" id="segundos"></select>
+        <br/><br/>
+        <button id="comecar">Começar!</button>
+
+        <div id="display">
+            <h3></h3>
+        </div><!--display-->
+
+        <button id="parar">Para Alarme!</button>
+    </div><!--mid-->
+    </div><!--container-->
+
+    <script>
+        var display = document.getElementById('display');
+
+        var minutos = document.getElementById('minutos');
+        var segundos = document.getElementById('segundos');
+
+        var comecar = document.getElementById('comecar');
+        var parar = document.getElementById('parar');
+
+        var cronometroSeg;
+
+        var minutoAtual;
+        var segundoAtual;
+        
+        var interval;
+
+        for (var i = 0; i <= 60; i++){
+            minutos.innerHTML+='<option value="'+i+'">'+i+'</option>';
+        }
+
+        for (var i = 1; i <= 60; i++){
+            segundos.innerHTML+='<option value="'+i+'">'+i+'</option>';
+        }
+
+        comecar.addEventListener('click',function(){
+            minutoAtual = minutos.value;
+            segundoAtual = segundos.value;
+
+            display.childNodes[1].innerHTML = minutoAtual + ":"+segundoAtual;
+
+            interval = setInterval(function(){
+
+                segundoAtual--;
+                if(segundoAtual <= 0){
+                    if(minutoAtual > 0){
+                        minutoAtual--;
+                        segundoAtual = 59;
+                    }else{
+                        alert("Acabou!");
+                        document.getElementById("sound").play();
+                        clearInterval(interval);
+                    }
+                }
+                
+                display.childNodes[1].innerHTML = minutoAtual + ":"+segundoAtual;
+            },1000);
+
+
+        })
+
+        parar.addEventListener('click', function(){
+            if(segundoAtual == 0){
+                document.getElementById("sound").pause();
+                alert("O alarme parou!!")
+            }else{
+
+            }
+        })
+        
+    </script>
+</body>
+</html>
